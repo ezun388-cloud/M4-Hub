@@ -1,1 +1,24 @@
-{"name":"M4 Hub","short_name":"M4 Hub","description":"Premium family home hub for tasks, shopping, dinner inspiration and daily coordination.","start_url":"./","scope":"./","display":"standalone","background_color":"#f6f0e8","theme_color":"#2b221b","icons":[{"src":"./icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},{"src":"./icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}]}
+{
+  "name": "M4 Hub",
+  "short_name": "M4 Hub",
+  "description": "Premium shared family hub for Mariana, Marcia, Morad and Mustapha.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f0e8",
+  "theme_color": "#2b221b",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

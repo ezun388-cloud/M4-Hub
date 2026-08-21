@@ -1,17 +1,242 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#2b221b"><meta name="apple-mobile-web-app-capable" content="yes"><title>M4 Hub</title><link rel="manifest" href="./manifest.json"><link rel="icon" href="./icon-192.png"><style>
-:root{--ink:#211b17;--muted:#756b62;--card:#fffdf9;--espresso:#2b221b;--gold:#c49a58;--soft:#f7f1e9;--line:#e8dfd5;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 20% 0%,#fff9f1,#f5eee6 38%,#eee5dc);color:var(--ink)}main{max-width:860px;margin:auto;padding:14px 14px 92px}.card{background:rgba(255,253,249,.97);border:1px solid rgba(219,205,190,.85);border-radius:26px;padding:18px;margin:14px 0;box-shadow:0 18px 45px rgba(62,46,33,.10)}.hero{position:relative;overflow:hidden;padding:0;min-height:330px;color:#fff;background:#211914}.hero:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(24,17,11,.12),rgba(24,17,11,.84)),url('./hero-photo.png') center 48%/cover no-repeat}.heroIn{position:relative;z-index:1;min-height:330px;padding:22px;display:flex;flex-direction:column;justify-content:flex-end;gap:12px}.brand{display:flex;align-items:center;gap:14px}.logo{width:70px;height:70px;border-radius:22px;background:url('./app-icon.png') center/cover no-repeat;border:1px solid #ffffff88}.pill,.tag{display:inline-block;width:max-content;padding:6px 10px;border-radius:999px;font-size:11px;font-weight:800}.pill{background:#ffffff2a;border:1px solid #ffffff33}.tag{background:#efe3d4;color:#5b4028}h1,h2{font-family:Georgia,serif}h1{font-size:40px;line-height:1;margin:0}h2{font-size:23px;margin:0 0 12px}.muted{color:var(--muted);font-size:14px}.tiny{font-size:12px;color:#8a7e74}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.metric{background:linear-gradient(#fbf7f1,#f4ece2);border-radius:18px;padding:14px;border:1px solid #ede2d6}.metric small{color:var(--muted)}.metric b{display:block;font-size:25px;margin-top:4px}button{border:0;border-radius:15px;padding:13px 14px;font-size:15px;font-weight:800;cursor:pointer}.primary{background:linear-gradient(#6f5438,#3a2c20);color:#fff}.secondary{background:#f2e7d8;color:#5a4026}.danger{background:#f8e8e5;color:#8e3f37}.row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}.row>*{flex:1}input,select,textarea{width:100%;padding:12px 13px;border:1px solid #ded3c8;border-radius:14px;background:#fffdfa;font-size:15px}textarea{min-height:78px}.tabs{position:fixed;bottom:0;left:0;right:0;background:#fffdf9f5;border-top:1px solid var(--line);z-index:30;display:flex;justify-content:center}.tabIn{width:min(860px,100%);display:grid;grid-template-columns:repeat(6,1fr);padding:6px}.tab{background:transparent;color:#86786c;padding:8px 3px;font-size:11px}.tab span{display:block;font-size:20px}.tab.active{background:#efe3d4;color:#4e3926}.page{display:none}.page.active{display:block}.item{padding:12px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px}.task{display:grid;grid-template-columns:36px 1fr auto;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}.check{width:34px;height:34px;padding:0;background:#eee5db;color:#6b5239}.check.done{background:#6f7f69;color:white}.banner{background:linear-gradient(#f7efe6,#f2e7da);border:1px solid #e8dacb;border-radius:18px;padding:14px}.recipeGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.recipe{background:linear-gradient(#fffaf4,#f5ede4);border:1px solid #eadfd3;border-radius:20px;padding:15px}.recipe .emoji{font-size:28px}.boardMsg{background:#f8f2eb;border-radius:18px;padding:13px;margin:9px 0}.empty{padding:18px;border:1px dashed #d8cbbf;border-radius:16px;text-align:center;color:var(--muted)}@media(max-width:600px){.grid3,.recipeGrid{grid-template-columns:1fr 1fr}.hero,.heroIn{min-height:285px}h1{font-size:35px}}
-</style></head><body><main>
-<section class="card hero"><div class="heroIn"><div class="pill">M4 Hub · Family Concierge</div><div class="brand"><div class="logo"></div><div><h1>M4 Hub</h1><div>Home, plans, dinner and daily life — beautifully organised.</div></div></div></div></section>
-<section id="today" class="page active"><div class="card"><h2>Today</h2><div class="grid3"><div class="metric"><small>Open tasks</small><b id="todayTasks">0</b></div><div class="metric"><small>Shopping</small><b id="todayShop">0</b></div><div class="metric"><small>Plans</small><b id="todayPlans">0</b></div></div></div><div class="card"><h2>Tonight’s dinner</h2><div id="dinnerCard" class="banner"></div></div><div class="card"><h2>Today’s family board</h2><div id="todayBoard"></div></div><div class="card"><h2>Today’s schedule</h2><div id="todaySchedule"></div></div></section>
-<section id="tasks" class="page"><div class="card"><h2>Tasks</h2><div class="row"><input id="taskText" placeholder="Add a family task…"><select id="taskPerson"><option>Anyone</option><option>M1</option><option>M2</option><option>M3</option><option>M4</option></select><button id="addTask" class="primary" style="flex:0 0 90px">Add</button></div></div><div class="card"><div id="taskList"></div></div></section>
-<section id="shopping" class="page"><div class="card"><h2>Shopping list</h2><div class="row"><input id="shopText" placeholder="Milk, detergent, batteries…"><button id="addShop" class="primary" style="flex:0 0 90px">Add</button></div></div><div class="card"><div id="shopList"></div></div></section>
-<section id="dinner" class="page"><div class="card"><h2>Dinner inspiration</h2><div class="row"><select id="recipeFilter"><option value="all">All quick dinners</option><option value="15">15 minutes</option><option value="veg">Vegetarian</option><option value="chicken">Chicken</option><option value="fish">Fish</option><option value="pasta">Pasta</option></select><button id="surpriseDinner" class="secondary">Surprise me</button></div></div><div class="card"><div id="recipeGrid" class="recipeGrid"></div></div><div class="card"><h2>Need more ideas?</h2><button id="moreRecipes" class="primary" style="width:100%">Browse quick dinner recipes</button></div></section>
-<section id="board" class="page"><div class="card"><h2>Family board</h2><div class="row"><select id="boardPerson"><option>M1</option><option>M2</option><option>M3</option><option>M4</option><option>Family</option></select><input id="boardText" placeholder="Running late… Need a lift… Buy bread…"><button id="addBoard" class="primary" style="flex:0 0 90px">Post</button></div></div><div class="card"><div id="boardList"></div></div></section>
-<section id="schedule" class="page"><div class="card"><h2>Family schedule</h2><div class="row"><input id="eventDate" type="date"><input id="eventTime" type="time"></div><div class="row"><input id="eventText" placeholder="School, appointment, pickup…"><select id="eventPerson"><option>Family</option><option>M1</option><option>M2</option><option>M3</option><option>M4</option></select></div><button id="addEvent" class="primary" style="width:100%">Add plan</button></div><div class="card"><div id="scheduleList"></div></div></section>
-</main><nav class="tabs"><div class="tabIn"><button class="tab active" data-p="today"><span>✦</span>Today</button><button class="tab" data-p="tasks"><span>✓</span>Tasks</button><button class="tab" data-p="shopping"><span>🛍️</span>Shop</button><button class="tab" data-p="dinner"><span>🍽️</span>Dinner</button><button class="tab" data-p="board"><span>💬</span>Board</button><button class="tab" data-p="schedule"><span>📅</span>Plan</button></div></nav>
-<script>
-const $=x=>document.getElementById(x),K='m4hub-v1';const R=[{n:'Creamy lemon chicken pasta',t:25,c:['chicken','pasta'],e:'🍋',i:'Chicken, pasta, lemon, cream, spinach and parmesan.'},{n:'Garlic prawn noodles',t:15,c:['fish','15'],e:'🍤',i:'Prawns, noodles, garlic, soy, lime and spring onion.'},{n:'Tomato basil gnocchi',t:15,c:['veg','15'],e:'🍅',i:'Gnocchi, cherry tomatoes, basil, mozzarella and pesto.'},{n:'Teriyaki salmon rice bowls',t:25,c:['fish'],e:'🐟',i:'Salmon, rice, cucumber, avocado and teriyaki glaze.'},{n:'Chicken fajita wraps',t:20,c:['chicken'],e:'🌯',i:'Chicken, peppers, onions, smoky spices and warm wraps.'},{n:'Spaghetti aglio e olio',t:15,c:['veg','pasta','15'],e:'🍝',i:'Spaghetti, garlic, olive oil, chilli, parsley and parmesan.'},{n:'Crispy halloumi couscous',t:20,c:['veg'],e:'🧀',i:'Halloumi, couscous, cucumber, tomatoes, herbs and lemon.'},{n:'Tuna tomato pasta',t:20,c:['fish','pasta'],e:'🥫',i:'Pasta, tuna, tomato, capers, garlic and parsley.'}];
-function load(){let d={tasks:[],shop:[],board:[],events:[],dinner:null};try{d={...d,...JSON.parse(localStorage.getItem(K)||'{}')}}catch{}return d}let db=load();const today=()=>new Date().toISOString().slice(0,10);function save(){localStorage.setItem(K,JSON.stringify(db));render()}document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));$(b.dataset.p).classList.add('active')});
-function render(){todayTasks.textContent=db.tasks.filter(x=>!x.done).length;todayShop.textContent=db.shop.filter(x=>!x.done).length;todayPlans.textContent=db.events.filter(x=>x.date===today()).length;let d=db.dinner||R[0];dinnerCard.innerHTML=`<div class="tiny">DINNER SUGGESTION</div><h3>${d.n}</h3><div class="muted">${d.i}</div><span class="tag" style="margin-top:9px">${d.t} min</span>`;todayBoard.innerHTML=db.board.filter(x=>x.date.slice(0,10)===today()).slice().reverse().map(x=>`<div class="boardMsg"><b>${x.person}</b><div>${x.text}</div><div class="tiny">${new Date(x.date).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</div></div>`).join('')||'<div class="empty">No messages today.</div>';todaySchedule.innerHTML=db.events.filter(x=>x.date===today()).sort((a,b)=>a.time.localeCompare(b.time)).map(x=>`<div class="item"><b>${x.time||'All day'}</b><div>${x.text}<div class="tiny">${x.person}</div></div></div>`).join('')||'<div class="empty">Nothing scheduled today.</div>';taskList.innerHTML=db.tasks.map((x,i)=>`<div class="task"><button class="check ${x.done?'done':''}" onclick="tt(${i})">✓</button><div><b>${x.text}</b><div class="tiny">${x.person}</div></div><button class="danger" onclick="dt(${i})">×</button></div>`).join('')||'<div class="empty">No tasks yet.</div>';shopList.innerHTML=db.shop.map((x,i)=>`<div class="task"><button class="check ${x.done?'done':''}" onclick="ts(${i})">✓</button><div><b>${x.text}</b></div><button class="danger" onclick="ds(${i})">×</button></div>`).join('')||'<div class="empty">Shopping list is empty.</div>';boardList.innerHTML=db.board.slice().reverse().map(x=>`<div class="boardMsg"><b>${x.person}</b><div>${x.text}</div><div class="tiny">${new Date(x.date).toLocaleString()}</div></div>`).join('')||'<div class="empty">No messages yet.</div>';scheduleList.innerHTML=db.events.slice().sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time)).map((x,i)=>`<div class="item"><div><b>${x.date} ${x.time}</b><div>${x.text}</div><div class="tiny">${x.person}</div></div><button class="danger" onclick="de(${i})">×</button></div>`).join('')||'<div class="empty">No plans yet.</div>';rr()}
-addTask.onclick=()=>{let t=taskText.value.trim();if(!t)return;db.tasks.push({text:t,person:taskPerson.value,done:false});taskText.value='';save()};window.tt=i=>{db.tasks[i].done=!db.tasks[i].done;save()};window.dt=i=>{db.tasks.splice(i,1);save()};addShop.onclick=()=>{let t=shopText.value.trim();if(!t)return;db.shop.push({text:t,done:false});shopText.value='';save()};window.ts=i=>{db.shop[i].done=!db.shop[i].done;save()};window.ds=i=>{db.shop.splice(i,1);save()};addBoard.onclick=()=>{let t=boardText.value.trim();if(!t)return;db.board.push({person:boardPerson.value,text:t,date:new Date().toISOString()});boardText.value='';save()};addEvent.onclick=()=>{let d=eventDate.value,t=eventText.value.trim();if(!d||!t)return;db.events.push({date:d,time:eventTime.value,text:t,person:eventPerson.value});eventText.value='';save()};window.de=i=>{db.events.splice(i,1);save()};function rr(){let f=recipeFilter?.value||'all',r=f==='all'?R:R.filter(x=>x.c.includes(f));recipeGrid.innerHTML=r.map(x=>`<div class="recipe"><div class="emoji">${x.e}</div><h3>${x.n}</h3><div class="tiny">${x.t} MIN</div><div class="muted" style="margin:7px 0">${x.i}</div><button class="secondary" onclick="pick('${x.n.replace(/'/g,"\\'")}')">Cook tonight</button></div>`).join('')}recipeFilter.onchange=rr;surpriseDinner.onclick=()=>{db.dinner=R[Math.floor(Math.random()*R.length)];save()};window.pick=n=>{db.dinner=R.find(x=>x.n===n);save();document.querySelector('[data-p="today"]').click()};moreRecipes.onclick=()=>window.open('https://www.bbcgoodfood.com/recipes/collection/quick-dinner-recipes','_blank');render();if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'));
-</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#2b221b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<title>M4 Hub</title>
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" href="./icon-192.png">
+<style>
+:root{
+ --ink:#211b17;--muted:#756b62;--cream:#f6f0e8;--card:#fffdf9;--espresso:#2b221b;
+ --gold:#c49a58;--gold2:#e5c995;--sage:#6f7f69;--rose:#a86262;--line:#e8dfd5;--soft:#f7f1e9;
+ font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif
+}
+*{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at 20% 0%,#fff9f1,#f5eee6 38%,#eee5dc);color:var(--ink)}
+main{max-width:860px;margin:auto;padding:14px 14px 94px}
+.card{background:rgba(255,253,249,.97);border:1px solid rgba(219,205,190,.85);border-radius:26px;padding:18px;margin:14px 0;box-shadow:0 18px 45px rgba(62,46,33,.10)}
+.hero{position:relative;overflow:hidden;padding:0;min-height:330px;color:#fff;background:#211914}
+.hero:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(24,17,11,.12),rgba(24,17,11,.84)),url('./hero-photo.png') center 48%/cover no-repeat}
+.heroIn{position:relative;z-index:1;min-height:330px;padding:22px;display:flex;flex-direction:column;justify-content:flex-end;gap:12px}
+.brand{display:flex;align-items:center;gap:14px}.logo{width:70px;height:70px;border-radius:22px;background:url('./app-icon.png') center/cover no-repeat;border:1px solid #ffffff88;box-shadow:0 10px 30px #0005}
+.pill{width:max-content;padding:7px 11px;border-radius:999px;background:#ffffff26;border:1px solid #ffffff33;font-size:12px;font-weight:800;backdrop-filter:blur(10px)}
+h1{font-family:Georgia,serif;font-size:40px;line-height:1;margin:0}h2{font-family:Georgia,serif;font-size:23px;margin:0 0 12px}h3{font-size:16px;margin:0 0 7px}
+.muted{color:var(--muted);font-size:14px}.tiny{font-size:12px;color:#8a7e74}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.metric{background:linear-gradient(180deg,#fbf7f1,#f4ece2);border-radius:18px;padding:14px;border:1px solid #ede2d6}.metric small{color:var(--muted)}.metric b{display:block;font-size:25px;margin-top:4px}
+button{border:0;border-radius:15px;padding:13px 14px;font-size:15px;font-weight:800;cursor:pointer}.primary{background:linear-gradient(180deg,#6f5438,#3a2c20);color:#fff;box-shadow:0 8px 20px #46321f33}.secondary{background:#f2e7d8;color:#5a4026}.danger{background:#f8e8e5;color:#8e3f37}.sage{background:#e9efe7;color:#52624d}
+.row{display:flex;gap:9px;flex-wrap:wrap;align-items:center}.row>*{flex:1}
+input,select,textarea{width:100%;padding:12px 13px;border:1px solid #ded3c8;border-radius:14px;background:#fffdfa;font-size:15px;color:var(--ink)}textarea{min-height:78px;resize:vertical}
+label{display:block;font-size:12px;color:var(--muted);font-weight:800;margin:0 0 5px}.field{margin:9px 0}
+.tabs{position:fixed;bottom:0;left:0;right:0;background:#fffdf9f5;border-top:1px solid var(--line);z-index:30;display:flex;justify-content:center;backdrop-filter:blur(14px)}
+.tabIn{width:min(860px,100%);display:grid;grid-template-columns:repeat(5,1fr);padding:6px 6px max(6px,env(safe-area-inset-bottom))}
+.tab{background:transparent;color:#86786c;padding:8px 3px;font-size:11px}.tab span{display:block;font-size:20px;margin-bottom:1px}.tab.active{background:#efe3d4;color:#4e3926}
+.page{display:none}.page.active{display:block}.item{padding:12px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px}.item:last-child{border-bottom:0}
+.tag{display:inline-block;padding:5px 9px;border-radius:999px;background:#efe3d4;color:#5b4028;font-size:11px;font-weight:800}.banner{background:linear-gradient(180deg,#f7efe6,#f2e7da);border:1px solid #e8dacb;border-radius:18px;padding:14px}
+.task{display:grid;grid-template-columns:36px 1fr auto;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}.check{width:34px;height:34px;border-radius:12px;padding:0;background:#eee5db;color:#6b5239}.check.done{background:#6f7f69;color:white}
+.recipeGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.recipe{background:linear-gradient(180deg,#fffaf4,#f5ede4);border:1px solid #eadfd3;border-radius:20px;padding:15px}.recipe .emoji{font-size:28px}.recipe .time{font-size:12px;font-weight:800;color:#7c684f}
+.boardMsg{background:#f8f2eb;border-radius:18px;padding:13px;margin:9px 0}.boardMsg b{display:block;margin-bottom:3px}.dayrow{display:grid;grid-template-columns:90px 1fr;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}
+.empty{padding:18px;border:1px dashed #d8cbbf;border-radius:16px;text-align:center;color:var(--muted)}
+.syncDot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#bbaba0;margin-right:6px}.syncDot.on{background:#6f7f69}.syncDot.err{background:#b45a4c}
+.rota{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;overflow:auto}.rotaDay{min-width:92px;background:#f8f1e8;border:1px solid #eadfd3;border-radius:16px;padding:10px}.rotaDay.today{outline:2px solid var(--gold);background:#fff7e8}.rotaDay .dow{font-size:11px;color:#8a755c;font-weight:900}.rotaDay .cook{font-weight:900;margin-top:5px}
+.hidden{display:none!important}
+@media(max-width:600px){.grid3,.recipeGrid{grid-template-columns:1fr 1fr}.hero,.heroIn{min-height:285px}h1{font-size:35px}.rota{display:flex}.rotaDay{flex:0 0 106px}}
+</style>
+</head>
+<body>
+<main>
+<section class="card hero">
+ <div class="heroIn"><div class="pill">M4 Hub · v2 · Shared Family Edition</div><div class="brand"><div class="logo"></div><div><h1>M4 Hub</h1><div style="opacity:.92">Mariana · Marcia · Morad · Mustapha</div></div></div></div>
+</section>
+
+<section id="today" class="page active">
+ <div class="card">
+  <div class="row"><h2 style="margin:0">Today</h2><div style="text-align:right"><span id="syncDot" class="syncDot"></span><span id="syncText" class="tiny">Local mode</span></div></div>
+  <div class="grid3" style="margin-top:12px"><div class="metric"><small>Open tasks</small><b id="todayTasks">0</b></div><div class="metric"><small>Shopping</small><b id="todayShop">0</b></div><div class="metric"><small>Plans</small><b id="todayPlans">0</b></div></div>
+ </div>
+ <div class="card"><h2>Tonight’s dinner</h2><div id="dinnerCard" class="banner"></div></div>
+ <div class="card"><h2>This week’s cooking rota</h2><div id="rota" class="rota"></div><div class="tiny" style="margin-top:10px">Mariana cooks once each week. Marcia, Morad and Mustapha cook twice each. The weekday pattern rotates automatically every week.</div></div>
+ <div class="card"><h2>Today’s family board</h2><div id="todayBoard"></div></div>
+ <div class="card"><h2>Today’s schedule</h2><div id="todaySchedule"></div></div>
+</section>
+
+<section id="tasks" class="page">
+ <div class="card"><h2>Tasks</h2><div class="row"><input id="taskText" placeholder="Add a family task…"><select id="taskPerson"><option>Anyone</option><option>Mariana</option><option>Marcia</option><option>Morad</option><option>Mustapha</option></select><button id="addTask" class="primary" style="flex:0 0 90px">Add</button></div></div>
+ <div class="card"><div id="taskList"></div></div>
+</section>
+
+<section id="shopping" class="page">
+ <div class="card"><h2>Shopping list</h2><div class="row"><input id="shopText" placeholder="Milk, detergent, batteries…"><button id="addShop" class="primary" style="flex:0 0 90px">Add</button></div></div>
+ <div class="card"><div id="shopList"></div></div>
+</section>
+
+<section id="dinner" class="page">
+ <div class="card"><h2>Dinner inspiration</h2><div class="row"><select id="recipeFilter"><option value="all">All quick dinners</option><option value="15">15 minutes</option><option value="veg">Vegetarian</option><option value="chicken">Chicken</option><option value="fish">Fish</option><option value="pasta">Pasta</option></select><button id="surpriseDinner" class="secondary">Surprise me</button></div></div>
+ <div class="card"><div id="recipeGrid" class="recipeGrid"></div></div>
+ <div class="card"><h2>Need more ideas?</h2><div class="muted" style="margin-bottom:10px">Open a larger collection of quick dinner recipes.</div><button id="moreRecipes" class="primary" style="width:100%">Browse quick dinner recipes</button></div>
+</section>
+
+<section id="more" class="page">
+ <div class="card"><h2>Family board</h2><div class="field"><label>Who</label><select id="boardPerson"><option>Mariana</option><option>Marcia</option><option>Morad</option><option>Mustapha</option><option>Family</option></select></div><div class="field"><label>Message</label><textarea id="boardText" placeholder="Running late… Need a lift… Please buy bread…"></textarea></div><button id="addBoard" class="primary" style="width:100%">Post message</button><div id="boardList" style="margin-top:12px"></div></div>
+ <div class="card"><h2>Family schedule</h2><div class="row"><input id="eventDate" type="date"><input id="eventTime" type="time"></div><div class="row"><input id="eventText" placeholder="School, appointment, pickup…"><select id="eventPerson"><option>Family</option><option>Mariana</option><option>Marcia</option><option>Morad</option><option>Mustapha</option></select></div><button id="addEvent" class="primary" style="width:100%">Add plan</button><div id="scheduleList" style="margin-top:12px"></div></div>
+
+ <div class="card">
+  <h2>Shared family sync</h2>
+  <div class="muted">M4 Hub can use a free Supabase project so entries made on one phone appear on the other family phones.</div>
+  <div class="field"><label>Supabase project URL</label><input id="sbUrl" placeholder="https://xxxxx.supabase.co"></div>
+  <div class="field"><label>Supabase anon key</label><input id="sbKey" placeholder="Paste anon/public key"></div>
+  <button id="saveCloud" class="secondary" style="width:100%">Save cloud settings</button>
+  <div id="authArea" class="hidden" style="margin-top:14px">
+    <div class="field"><label>Your name</label><select id="myName"><option>Mariana</option><option>Marcia</option><option>Morad</option><option>Mustapha</option></select></div>
+    <div class="field"><label>Email</label><input id="authEmail" type="email" placeholder="you@example.com"></div>
+    <div class="field"><label>Password</label><input id="authPassword" type="password" placeholder="At least 6 characters"></div>
+    <div class="row"><button id="signUp" class="secondary">Create account</button><button id="signIn" class="primary">Sign in</button></div>
+    <div id="householdArea" class="hidden" style="margin-top:14px">
+      <div class="banner"><b>M4 household</b><div id="householdState" class="tiny" style="margin-top:5px"></div></div>
+      <div class="field"><label>Invite code</label><input id="inviteCode" placeholder="Enter code from another family member"></div>
+      <div class="row"><button id="createHousehold" class="secondary">Create M4 household</button><button id="joinHousehold" class="primary">Join household</button></div>
+      <button id="signOut" class="danger" style="width:100%;margin-top:9px">Sign out</button>
+    </div>
+  </div>
+  <div class="tiny" style="margin-top:10px">Run the included <b>supabase-setup.sql</b> once in Supabase before using shared mode.</div>
+ </div>
+</section>
+</main>
+
+<nav class="tabs"><div class="tabIn">
+ <button class="tab active" data-p="today"><span>✦</span>Today</button>
+ <button class="tab" data-p="tasks"><span>✓</span>Tasks</button>
+ <button class="tab" data-p="shopping"><span>🛍️</span>Shop</button>
+ <button class="tab" data-p="dinner"><span>🍽️</span>Dinner</button>
+ <button class="tab" data-p="more"><span>•••</span>More</button>
+</div></nav>
+
+<script type="module">
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+const $=x=>document.getElementById(x),K="m4hub-v2";
+const FAMILY=["Mariana","Marcia","Morad","Mustapha"];
+const RECIPES=[
+ {n:"Creamy lemon chicken pasta",t:25,c:["chicken","pasta"],e:"🍋",i:"Pan-seared chicken, pasta, lemon, cream, spinach. Finish with parmesan."},
+ {n:"Garlic prawn noodles",t:15,c:["fish","15"],e:"🍤",i:"Prawns, noodles, garlic, soy, lime and spring onion. Fast wok dinner."},
+ {n:"Tomato basil gnocchi",t:15,c:["veg","15"],e:"🍅",i:"Gnocchi, cherry tomatoes, basil, mozzarella and a spoon of pesto."},
+ {n:"Teriyaki salmon rice bowls",t:25,c:["fish"],e:"🐟",i:"Salmon, rice, cucumber, avocado and quick teriyaki glaze."},
+ {n:"Chicken fajita wraps",t:20,c:["chicken"],e:"🌯",i:"Chicken strips, peppers, onions, smoky spices and warm wraps."},
+ {n:"Mushroom spinach risotto",t:30,c:["veg"],e:"🍄",i:"Creamy rice with mushrooms, spinach, parmesan and lemon zest."},
+ {n:"Pesto chicken tray",t:30,c:["chicken"],e:"🌿",i:"Chicken, baby potatoes, tomatoes and pesto roasted on one tray."},
+ {n:"Spaghetti aglio e olio",t:15,c:["veg","pasta","15"],e:"🍝",i:"Spaghetti, garlic, olive oil, chilli, parsley and parmesan."},
+ {n:"Crispy halloumi couscous",t:20,c:["veg"],e:"🧀",i:"Halloumi, couscous, cucumber, tomatoes, herbs and lemon."},
+ {n:"Tuna tomato pasta",t:20,c:["fish","pasta"],e:"🥫",i:"Pasta, tuna, tomato, capers, garlic and parsley."}
+];
+
+function emptyDB(){return{tasks:[],shop:[],board:[],events:[],dinner:null,cloud:{url:"",key:"",householdId:null,inviteCode:null,myName:""}}}
+function load(){try{return{...emptyDB(),...JSON.parse(localStorage.getItem(K)||"{}")}}catch{return emptyDB()}}
+let db=load(),sb=null,user=null,channel=null,syncing=false;
+function persist(){localStorage.setItem(K,JSON.stringify(db))}
+function today(){return new Date().toISOString().slice(0,10)}
+function mondayOf(d=new Date()){let x=new Date(d);x.setHours(0,0,0,0);let day=(x.getDay()+6)%7;x.setDate(x.getDate()-day);return x}
+function weekNumber(d=new Date()){const x=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));x.setUTCDate(x.getUTCDate()+4-(x.getUTCDay()||7));const y=new Date(Date.UTC(x.getUTCFullYear(),0,1));return Math.ceil((((x-y)/86400000)+1)/7)}
+function cookingRota(){
+ const base=["Mariana","Marcia","Morad","Mustapha","Marcia","Morad","Mustapha"];
+ const rot=weekNumber()%7,arr=base.slice(rot).concat(base.slice(0,rot)),mon=mondayOf();
+ return arr.map((cook,i)=>{const d=new Date(mon);d.setDate(mon.getDate()+i);return{date:d.toISOString().slice(0,10),cook}})
+}
+function recipeForDate(ds){let n=Array.from(ds).reduce((a,c)=>a+c.charCodeAt(0),0);return RECIPES[n%RECIPES.length]}
+
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));b.classList.add("active");document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"));$(b.dataset.p).classList.add("active")});
+
+function render(){
+ const td=today(),rota=cookingRota(),tonight=rota.find(x=>x.date===td)||rota[0],rec=db.dinner||recipeForDate(td);
+ $("todayTasks").textContent=db.tasks.filter(x=>!x.done).length;$("todayShop").textContent=db.shop.filter(x=>!x.done).length;$("todayPlans").textContent=db.events.filter(x=>x.date===td).length;
+ $("dinnerCard").innerHTML=`<div style="font-size:12px;color:#8b775e;font-weight:900">TONIGHT · ${tonight.cook} IS COOKING</div><h3 style="font-family:Georgia,serif;font-size:22px;margin:6px 0">${rec.n}</h3><div class="muted">${rec.i}</div><div class="tag" style="margin-top:10px">${rec.t} min</div>`;
+ $("rota").innerHTML=rota.map(x=>{let d=new Date(x.date+"T12:00:00");return`<div class="rotaDay ${x.date===td?"today":""}"><div class="dow">${d.toLocaleDateString([],{weekday:"short"}).toUpperCase()}</div><div class="tiny">${d.toLocaleDateString([],{day:"numeric",month:"short"})}</div><div class="cook">${x.cook}</div></div>`}).join("");
+ $("todayBoard").innerHTML=db.board.filter(x=>x.created_at?.slice(0,10)===td||x.date?.slice(0,10)===td).slice().reverse().map(x=>`<div class="boardMsg"><b>${x.person}</b><div>${x.text}</div></div>`).join("")||`<div class="empty">No messages today.</div>`;
+ $("todaySchedule").innerHTML=db.events.filter(x=>x.date===td).sort((a,b)=>(a.time||"").localeCompare(b.time||"")).map(x=>`<div class="dayrow"><b>${x.time||"All day"}</b><div><b>${x.text}</b><div class="tiny">${x.person}</div></div></div>`).join("")||`<div class="empty">Nothing scheduled today.</div>`;
+ $("taskList").innerHTML=db.tasks.map((x,i)=>`<div class="task"><button class="check ${x.done?"done":""}" data-task="${i}">✓</button><div><b style="${x.done?"text-decoration:line-through;opacity:.55":""}">${x.text}</b><div class="tiny">${x.person}</div></div><button class="danger" data-deltask="${i}">×</button></div>`).join("")||`<div class="empty">No tasks yet.</div>`;
+ $("shopList").innerHTML=db.shop.map((x,i)=>`<div class="task"><button class="check ${x.done?"done":""}" data-shop="${i}">✓</button><div><b style="${x.done?"text-decoration:line-through;opacity:.55":""}">${x.text}</b></div><button class="danger" data-delshop="${i}">×</button></div>`).join("")||`<div class="empty">Shopping list is empty.</div>`;
+ $("boardList").innerHTML=db.board.slice().reverse().map(x=>`<div class="boardMsg"><b>${x.person}</b><div>${x.text}</div><div class="tiny">${new Date(x.created_at||x.date).toLocaleString()}</div></div>`).join("")||`<div class="empty">No family messages yet.</div>`;
+ $("scheduleList").innerHTML=db.events.slice().sort((a,b)=>(a.date+(a.time||"")).localeCompare(b.date+(b.time||""))).map((x,i)=>`<div class="item"><div><b>${x.date} ${x.time||""}</b><div>${x.text}</div><div class="tiny">${x.person}</div></div><button class="danger" data-delevent="${i}">×</button></div>`).join("")||`<div class="empty">No plans yet.</div>`;
+ renderRecipes();wireDynamic();renderSync()
+}
+function wireDynamic(){
+ document.querySelectorAll("[data-task]").forEach(b=>b.onclick=async()=>{let x=db.tasks[+b.dataset.task];x.done=!x.done;await writeChange("tasks",x);});
+ document.querySelectorAll("[data-deltask]").forEach(b=>b.onclick=()=>removeItem("tasks",db.tasks[+b.dataset.deltask]));
+ document.querySelectorAll("[data-shop]").forEach(b=>b.onclick=async()=>{let x=db.shop[+b.dataset.shop];x.done=!x.done;await writeChange("shopping",x);});
+ document.querySelectorAll("[data-delshop]").forEach(b=>b.onclick=()=>removeItem("shopping",db.shop[+b.dataset.delshop]));
+ document.querySelectorAll("[data-delevent]").forEach(b=>b.onclick=()=>removeItem("events",db.events[+b.dataset.delevent]));
+}
+function renderRecipes(){let f=$("recipeFilter").value||"all",r=f==="all"?RECIPES:RECIPES.filter(x=>x.c.includes(f));$("recipeGrid").innerHTML=r.map(x=>`<div class="recipe"><div class="emoji">${x.e}</div><h3>${x.n}</h3><div class="time">${x.t} MIN</div><div class="muted" style="margin:7px 0">${x.i}</div><button class="secondary chooseRecipe" data-name="${x.n}">Cook tonight</button></div>`).join("");document.querySelectorAll(".chooseRecipe").forEach(b=>b.onclick=()=>{db.dinner=RECIPES.find(x=>x.n===b.dataset.name);persist();render();document.querySelector('[data-p="today"]').click()})}
+$("recipeFilter").onchange=renderRecipes;$("surpriseDinner").onclick=()=>{db.dinner=RECIPES[Math.floor(Math.random()*RECIPES.length)];persist();render()};$("moreRecipes").onclick=()=>window.open("https://www.bbcgoodfood.com/recipes/collection/quick-dinner-recipes","_blank");
+
+async function addRow(table,row,localArray){
+ row.id=row.id||crypto.randomUUID();row.household_id=db.cloud.householdId||null;
+ if(sb&&user&&db.cloud.householdId){let{error}=await sb.from(table).insert(row);if(error){alert(error.message);return}}
+ else{localArray.push(row);persist();render()}
+}
+async function writeChange(table,row){
+ if(sb&&user&&db.cloud.householdId){let{error}=await sb.from(table).update({done:row.done}).eq("id",row.id);if(error)alert(error.message)}
+ else{persist();render()}
+}
+async function removeItem(table,row){
+ if(sb&&user&&db.cloud.householdId){let{error}=await sb.from(table).delete().eq("id",row.id);if(error)alert(error.message)}
+ else{let arr=table==="tasks"?db.tasks:table==="shopping"?db.shop:db.events;arr.splice(arr.findIndex(x=>x.id===row.id),1);persist();render()}
+}
+$("addTask").onclick=async()=>{let t=$("taskText").value.trim();if(!t)return;await addRow("tasks",{text:t,person:$("taskPerson").value,done:false},db.tasks);$("taskText").value=""};
+$("addShop").onclick=async()=>{let t=$("shopText").value.trim();if(!t)return;await addRow("shopping",{text:t,done:false},db.shop);$("shopText").value=""};
+$("addBoard").onclick=async()=>{let t=$("boardText").value.trim();if(!t)return;await addRow("board_messages",{person:$("boardPerson").value,text:t,created_at:new Date().toISOString()},db.board);$("boardText").value=""};
+$("addEvent").onclick=async()=>{let d=$("eventDate").value,t=$("eventText").value.trim();if(!d||!t)return;await addRow("events",{date:d,time:$("eventTime").value||null,text:t,person:$("eventPerson").value},db.events);$("eventText").value=""};
+
+function configClient(){
+ if(db.cloud.url&&db.cloud.key){try{sb=createClient(db.cloud.url,db.cloud.key);$("authArea").classList.remove("hidden");return true}catch{}}
+ sb=null;$("authArea").classList.add("hidden");return false
+}
+$("saveCloud").onclick=()=>{db.cloud.url=$("sbUrl").value.trim();db.cloud.key=$("sbKey").value.trim();persist();configClient();initAuth();renderSync()};
+$("sbUrl").value=db.cloud.url||"";$("sbKey").value=db.cloud.key||"";$("myName").value=db.cloud.myName||"Mariana";
+async function initAuth(){
+ if(!sb)return;
+ const {data}=await sb.auth.getSession();user=data.session?.user||null;
+ $("householdArea").classList.toggle("hidden",!user);
+ if(user)await loadMembership();
+ renderSync()
+}
+$("signUp").onclick=async()=>{db.cloud.myName=$("myName").value;persist();let{error}=await sb.auth.signUp({email:$("authEmail").value,password:$("authPassword").value});if(error)alert(error.message);else alert("Account created. If email confirmation is enabled, confirm the email first.");await initAuth()};
+$("signIn").onclick=async()=>{db.cloud.myName=$("myName").value;persist();let{data,error}=await sb.auth.signInWithPassword({email:$("authEmail").value,password:$("authPassword").value});if(error)alert(error.message);else{user=data.user;await loadMembership();renderSync()}};
+$("signOut").onclick=async()=>{await sb.auth.signOut();user=null;db.cloud.householdId=null;db.cloud.inviteCode=null;persist();if(channel)sb.removeChannel(channel);channel=null;renderSync()};
+$("createHousehold").onclick=async()=>{db.cloud.myName=$("myName").value;persist();let{data,error}=await sb.rpc("create_m4_household",{p_name:"M4",p_display_name:db.cloud.myName});if(error)return alert(error.message);db.cloud.householdId=data[0].household_id;db.cloud.inviteCode=data[0].invite_code;persist();await startShared();renderSync()};
+$("joinHousehold").onclick=async()=>{db.cloud.myName=$("myName").value;persist();let{data,error}=await sb.rpc("join_m4_household",{p_invite_code:$("inviteCode").value.trim().toUpperCase(),p_display_name:db.cloud.myName});if(error)return alert(error.message);db.cloud.householdId=data;persist();await loadMembership();renderSync()};
+async function loadMembership(){
+ let{data,error}=await sb.from("household_members").select("household_id,display_name,households(invite_code)").eq("user_id",user.id).limit(1).maybeSingle();
+ if(!error&&data){db.cloud.householdId=data.household_id;db.cloud.myName=data.display_name;db.cloud.inviteCode=data.households?.invite_code||null;persist();await startShared()}
+}
+async function startShared(){
+ if(!sb||!user||!db.cloud.householdId)return;
+ await refreshShared();
+ if(channel)sb.removeChannel(channel);
+ channel=sb.channel("m4-live").on("postgres_changes",{event:"*",schema:"public",table:"tasks",filter:`household_id=eq.${db.cloud.householdId}`},refreshShared)
+ .on("postgres_changes",{event:"*",schema:"public",table:"shopping",filter:`household_id=eq.${db.cloud.householdId}`},refreshShared)
+ .on("postgres_changes",{event:"*",schema:"public",table:"board_messages",filter:`household_id=eq.${db.cloud.householdId}`},refreshShared)
+ .on("postgres_changes",{event:"*",schema:"public",table:"events",filter:`household_id=eq.${db.cloud.householdId}`},refreshShared).subscribe();
+}
+async function refreshShared(){
+ if(syncing)return;syncing=true;
+ try{
+  const h=db.cloud.householdId;
+  const [a,b,c,d]=await Promise.all([
+   sb.from("tasks").select("*").eq("household_id",h).order("created_at"),
+   sb.from("shopping").select("*").eq("household_id",h).order("created_at"),
+   sb.from("board_messages").select("*").eq("household_id",h).order("created_at"),
+   sb.from("events").select("*").eq("household_id",h).order("date")
+  ]);
+  if(!a.error)db.tasks=a.data;if(!b.error)db.shop=b.data;if(!c.error)db.board=c.data;if(!d.error)db.events=d.data;persist();render()
+ }finally{syncing=false}
+}
+function renderSync(){
+ let on=!!(sb&&user&&db.cloud.householdId);$("syncDot").className="syncDot"+(on?" on":"");$("syncText").textContent=on?`Shared · ${db.cloud.myName||"M4"}`:(sb&&user?"Signed in · not joined":"Local mode");
+ if($("householdState"))$("householdState").textContent=db.cloud.householdId?`Connected. Invite code: ${db.cloud.inviteCode||"—"}`:"Create the household once, or join with the family invite code."
+}
+configClient();initAuth();render();
+if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("./sw.js"));
+</script>
+</body></html>
