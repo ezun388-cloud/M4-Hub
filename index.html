@@ -189,7 +189,14 @@ $("addBoard").onclick=async()=>{let t=$("boardText").value.trim();if(!t)return;a
 $("addEvent").onclick=async()=>{let d=$("eventDate").value,t=$("eventText").value.trim();if(!d||!t)return;await addRow("events",{date:d,time:$("eventTime").value||null,text:t,person:$("eventPerson").value},db.events);$("eventText").value=""};
 
 function configClient(){
- if(db.cloud.url&&db.cloud.key){try{sb=createClient(db.cloud.url,db.cloud.key);$("authArea").classList.remove("hidden");return true}catch{}}
+ if(db.cloud.url&&db.cloud.key){try{sb=createClient(db.cloud.url,db.cloud.key,{
+  auth:{
+    persistSession:true,
+    autoRefreshToken:true,
+    detectSessionInUrl:true,
+    storage:window.localStorage
+  }
+});$("authArea").classList.remove("hidden");return true}catch{}}
  sb=null;$("authArea").classList.add("hidden");return false
 }
 $("saveCloud").onclick=()=>{db.cloud.url=$("sbUrl").value.trim();db.cloud.key=$("sbKey").value.trim();persist();configClient();initAuth();renderSync()};
