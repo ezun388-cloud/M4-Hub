@@ -65,6 +65,7 @@ label{display:block;font-size:12px;color:var(--muted);font-weight:800;margin:0 0
 
 <section id="tasks" class="page">
  <div class="card"><h2>Tasks</h2><div class="row"><input id="taskText" placeholder="Add a family task…"><select id="taskPerson"><option>Anyone</option><option>Mariana</option><option>Marcia</option><option>Morad</option><option>Mustapha</option></select><button id="addTask" class="primary" style="flex:0 0 90px">Add</button></div></div>
+ <div class="field" style="margin-top:10px"><label style="display:flex;align-items:center;gap:10px"><input id="taskUrgent" type="checkbox" style="width:auto"> Urgent task — notify assignee</label></div>
  <div class="card"><div id="taskList"></div></div>
 </section>
 
@@ -185,7 +186,43 @@ async function removeItem(table,row){
  if(sb&&user&&db.cloud.householdId){let{error}=await sb.from(table).delete().eq("id",row.id);if(error)alert(error.message)}
  else{let arr=table==="tasks"?db.tasks:table==="shopping"?db.shop:db.events;arr.splice(arr.findIndex(x=>x.id===row.id),1);persist();render()}
 }
-$("addTask").onclick=async()=>{let t=$("taskText").value.trim();if(!t)return;await addRow("tasks",{text:t,person:$("taskPerson").value,done:false},db.tasks);$("taskText").value=""};
+$("addTask").onclick=async()=>{
+  const t=$("taskText").value.trim();
+  const person=$("taskPerson").value;
+  const urgent=$("taskUrgent").checked;
+
+  if(!t)return;
+
+  if(urgent && person==="Anyone"){
+    alert("Please choose a specific family member for an urgent task.");
+    return;
+  }
+
+  await addRow(
+    "tasks",
+    {text:t,person:person,done:false},
+    db.tasks
+  );
+
+  if(urgent && sb && db.cloud.householdId){
+    const {error}=await sb.functions.invoke("send-push",{
+      body:{
+        household_id:db.cloud.householdId,
+        person:person,
+        title:"🚨 Urgent M4 task",
+        body:t
+      }
+    });
+
+    if(error){
+      console.error("Urgent notification failed:",error);
+      alert("Task saved, but notification could not be sent.");
+    }
+  }
+
+  $("taskText").value="";
+  $("taskUrgent").checked=false;
+};
 $("addShop").onclick=async()=>{let t=$("shopText").value.trim();if(!t)return;await addRow("shopping",{text:t,done:false},db.shop);$("shopText").value=""};
 $("addBoard").onclick=async()=>{let t=$("boardText").value.trim();if(!t)return;await addRow("board_messages",{person:$("boardPerson").value,text:t,created_at:new Date().toISOString()},db.board);$("boardText").value=""};
 $("addEvent").onclick=async()=>{let d=$("eventDate").value,t=$("eventText").value.trim();if(!d||!t)return;await addRow("events",{date:d,time:$("eventTime").value||null,text:t,person:$("eventPerson").value},db.events);$("eventText").value=""};
